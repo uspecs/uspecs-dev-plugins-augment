@@ -1,0 +1,16 @@
+{
+  "name": "uspecs-dev-plugins-augment",
+  "owner": {
+    "name": "unTill Software Development Group B.V."
+  },
+  "metadata": {
+    "description": "uspecs framework plugins for Augment Code (development build)",
+    "version": "2.3.0-dev+20260504-1448.123be2816097"
+  },
+  "plugins": [
+    {
+      "name": "uspecs-dev",
+      "source": "./uspecs-dev"
+    }
+  ]
+}
