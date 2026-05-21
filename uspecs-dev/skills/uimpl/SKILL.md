@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 Parse user input as `[options]`.
 
-Identify the root directory of the plugin (PLUGIN_ROOT) and run `bash {PLUGIN_ROOT}/bin/softeng.sh action uimpl [options]` and follow the instructions in the output.
+Identify the root directory of the plugin (PLUGIN_ROOT), set cwd to the uspecs-using project root, and run `bash {PLUGIN_ROOT}/bin/softeng.sh action uimpl [options]` and follow the instructions in the output.
 
 Options: `--change-folder <path>`, `--plan`, `--no-self-review`
 
