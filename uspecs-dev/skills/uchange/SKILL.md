@@ -19,6 +19,9 @@ Parse user input as `[options] {description}`:
   - `revert` -- reverting a previous commit
   - `style` -- formatting, whitespace, lint fixes with no semantic change
   - `test` -- adding or correcting tests only
+  - Extended types
+    - `rsch` -- research: forward-looking spike to explore options, technologies, or approaches that inform a future decision
+    - `inv` -- investigation: diagnose an existing problem or incident, including root-cause analysis, with no fix committed yet
 
 - If {description} contains a URL, add `--issue-url {URL}` option
   - If you can fetch the issue body from that URL (using your skills, MCP integrations, etc.), also add `--fetchable`.
