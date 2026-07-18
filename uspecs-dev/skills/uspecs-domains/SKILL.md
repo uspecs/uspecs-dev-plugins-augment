@@ -91,8 +91,24 @@ Target subject area of a computer system (product).
     - Relationship index tables
       - Rows sorted by `Upstream`
       - Full pattern names, e.g. `Open Host Service`, `Published Language`, `Conformist`, `Anti-Corruption Layer`
+    - Special contexts in Domain-level relationship views
+      - Classify foundational Contexts independently in `Service exposure` and `Model alignment`; classify unmapped Contexts only in `Service exposure`
+      - Classify once from the complete, unsuppressed set of Context-to-Context relationships in the view; do not reclassify after suppressing relationships
+      - A foundational Context has outgoing relationships to at least five distinct downstream Contexts in the view
+        - Count only upstream-to-downstream relationships
+        - Count each downstream Context once, regardless of the number of contracts or relationships with it
+      - An unmapped Context has no incoming or outgoing Service exposure relationship
+      - Omit every relationship involving a Special Context from the corresponding Domain-level diagram and relationship index
+      - Keep every Domain Context in the Service exposure diagram so Contexts without Service exposure relationships can link to `unmapped`
+      - In Model alignment, omit Contexts with no relationships; retain a participating ordinary Context when suppressing its relationships to a foundational Context leaves it isolated
+      - Link the synthetic `foundational` node to each foundational Context with an undirected, solid, unlabeled link written as `foundational --- {Context}` in Mermaid
+      - In Service exposure only, link the synthetic `unmapped` node to each unmapped Context with an undirected, solid, unlabeled link written as `unmapped --- {Context}` in Mermaid
+      - Give both synthetic special nodes a transparent background and dashed border, e.g. `fill:transparent,stroke-dasharray: 5 5`, and render both labels without square brackets; omit a synthetic node when no Context has that classification in the view
+      - Explain beneath a diagram containing a special node that classification links are not service-exposure or model-alignment relationships
+      - Do not add classification links to relationship indexes
+      - Preserve the complete relationship graphs and canonical relationship details in each Bounded Context specification
     - Relationship graphs follow `Relationship graph rules`
-    - Domain-level Context Maps and relationship indexes contain Bounded Contexts only; external actors stay in `External actors`
+    - Domain-level Context Maps and relationship indexes contain Bounded Contexts only; external actors stay in `External actors`; synthetic `foundational` nodes and the Service exposure-only `unmapped` node are the only non-Context nodes allowed in Domain-level relationship diagrams
 
 ### Subdomain
 
@@ -120,7 +136,7 @@ A model boundary in the solution space, with a specific set of actors, concepts,
 - Title: `# Bounded Context: {slug}`, e.g. `# Bounded Context: checkout`
 - Solution space, both strategic (boundary) and tactical (the model and canonical vocabulary that realize it)
 - Describes
-  - Executive summary
+  - Overview
     - Scope
     - Out of scope
   - External actors
@@ -188,6 +204,12 @@ A model boundary in the solution space, with a specific set of actors, concepts,
   - `Conformist (cf)`: downstream adopts the upstream model as-is, without the upstream publishing a separate formal language for this relationship
   - `Anti-Corruption Layer (acl)`: downstream translates the upstream model into its own model
 - Arrows point upstream -> downstream (provider -> consumer). Arrow direction does not encode runtime data, request, or call flow
+- Treat opposite-direction edges between the same Context pair as a modeling warning and audit them before finalizing the relationship views:
+  - Identify the owner/provider of each contract and its actual consumer
+  - Distinguish a workflow or orchestrator that consumes both providers from direct provider-to-provider consumption; shared participation in a workflow does not create a relationship between the providers
+  - Remove any edge not supported by a direct contract dependency
+  - If both directions remain supported, document them as two independent directed relationships and surface the reciprocal coupling; never merge them into one bidirectional relationship
+- Each graph edge represents one directed relationship. Never use bidirectional notation such as `<->`
 - Edge labels name the carried contract/concept as a noun phrase (e.g. `order placement API`, `payment authorization`), never a flow verb (e.g. `push samples`, `writes to`). At most three words
 - Edge labels do not include pattern suffixes
 - Edge styles encode relationship patterns
@@ -203,9 +225,11 @@ A model boundary in the solution space, with a specific set of actors, concepts,
   - Detail subsections for relationships documented in that section
     - Entry order in a Context: incoming relationships first, sorted by upstream name; outgoing/provider relationships second, sorted by downstream name or by provided contract name for one-to-many contracts
 - Detail subsections
+  - Each detail documents one provider-owned contract in one direction and stays consistent with its graph edges and relationship-index rows; never combine reciprocal contracts in one detail
   - Headings
     - `#### {upstream} -> {downstream}: {carried concept} ({pattern})`
     - `#### {provider}: {provided interface, language, or model} ({pattern})` for one-to-many provided contracts
+    - Use only these directed heading forms; never use `<->`
     - Pattern suffix
       - Service only: one service exposure pattern in a relationship detail heading under `### Service exposure`, e.g. `(ohs)`, `(c/s)`
       - Service plus model alignment: a composed suffix in a single relationship detail heading under `### Service exposure`, e.g. `(ohs + pl)`, `(ohs + cf)`, `(ohs + acl)`, or the same model suffixes with `c/s`
@@ -222,6 +246,7 @@ A model boundary in the solution space, with a specific set of actors, concepts,
     - For one-to-many provider contracts, use role blocks:
       - `Provider:` for the exposed service, interface, channel, language, or contract
       - `Consumers:` for each role, system, or Context consuming the contract
+    - Use singular `Upstream:` or `Provider:` because one detail has one contract owner; never use `Providers:`
     - For external providers with no Context spec, put provider documentation under `Upstream:` and local adaptation or translation notes under `Downstream:`
   - Canonical cross-context details live with the artifact being made canonical:
     - Exposed service or integration contract details live in the upstream/provider Context
