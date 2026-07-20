@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "uspecs framework plugins for Augment Code (development build)",
-    "version": "2.0.0-dev+20260718-1910.f30f491e26ea"
+    "version": "2.0.0-dev+20260720-1546.39dbf0ad19f7"
   },
   "plugins": [
     {
